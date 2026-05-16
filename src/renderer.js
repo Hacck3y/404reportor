@@ -292,12 +292,12 @@ function clientScript() {
   return `
 const root = document.documentElement;
 const toggle = document.querySelector('[data-theme-toggle]');
-const storedTheme = localStorage.getItem('recon-report-theme');
+const storedTheme = localStorage.getItem('404reportor-theme');
 if (storedTheme) root.dataset.theme = storedTheme;
 toggle?.addEventListener('click', () => {
   const next = root.dataset.theme === 'light' ? 'dark' : 'light';
   root.dataset.theme = next;
-  localStorage.setItem('recon-report-theme', next);
+  localStorage.setItem('404reportor-theme', next);
 });
 
 const lightbox = document.querySelector('.lightbox');

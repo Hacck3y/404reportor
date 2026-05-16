@@ -1,18 +1,18 @@
 
 # ============================================================
-# RECON-REPORT — AI-Powered Cybersecurity Report Generator
+# 404reportor — AI-Powered Cybersecurity Report Generator
 # NPM CLI Tool — Full Implementation Specification
 # ============================================================
 
-Build a production-ready npm CLI tool called `recon-report` that transforms raw cybersecurity notes into professional reports. Follow every specification below exactly.
+Build a production-ready npm CLI tool called `404reportor` that transforms raw cybersecurity notes into professional reports. Follow every specification below exactly.
 
 ## 1. PROJECT STRUCTURE
 
 Create this exact file tree:
 
-recon-report/
+404reportor/
 ├── bin/
-│   └── recon-report.js        # CLI entry point (#!/usr/bin/env node)
+│   └── 404reportor.js        # CLI entry point (#!/usr/bin/env node)
 ├── src/
 │   ├── parser.js              # Parses main.md into structured sections
 │   ├── image-processor.js     # Handles img/ folder — base64, OCR metadata
@@ -29,19 +29,19 @@ recon-report/
 
 ## 2. INSTALLATION FLOW
 
-When a user runs `npm install -g recon-report` they get a global CLI.
+When a user runs `npm install -g 404reportor` they get a global CLI.
 
 In any project folder they run:
-  `recon-report init`   → scaffolds main.md + img/ + .env in cwd
-  `recon-report run`    → processes and generates report
-  `recon-report run --format pdf`     → pdf output
-  `recon-report run --format html`    → html output (default)
-  `recon-report run --format md`      → markdown output
-  `recon-report run --type htb`       → HTB machine report style
-  `recon-report run --type ctf`       → CTF writeup style
-  `recon-report run --type pentest`   → professional pentest report
-  `recon-report run --type cpts`      → CPTS exam report style
-  `recon-report run --type oscp`      → OSCP exam report style
+  `404reportor init`   → scaffolds main.md + img/ + .env in cwd
+  `404reportor run`    → processes and generates report
+  `404reportor run --format pdf`     → pdf output
+  `404reportor run --format html`    → html output (default)
+  `404reportor run --format md`      → markdown output
+  `404reportor run --type htb`       → HTB machine report style
+  `404reportor run --type ctf`       → CTF writeup style
+  `404reportor run --type pentest`   → professional pentest report
+  `404reportor run --type cpts`      → CPTS exam report style
+  `404reportor run --type oscp`      → OSCP exam report style
 
 
 
@@ -223,7 +223,7 @@ Use ONLY these packages (no bloat):
 
 ## 8. CLI UX — TERMINAL OUTPUT
 
-When user runs `recon-report run`, show:
+When user runs `404reportor run`, show:
 
   ⠋ Reading main.md... (file size, line count)
   ✓ Parsed 14 sections, 47 commands, 3 credentials found
@@ -244,7 +244,7 @@ When user runs `recon-report run`, show:
 
 ## 9. CONFIG FILE (optional)
 
-Support a recon-report.config.js in cwd:
+Support a 404reportor.config.js in cwd:
 
 module.exports = {
   author: "404",
@@ -263,7 +263,7 @@ module.exports = {
 ## 10. ERROR HANDLING + EDGE CASES
 
 Handle ALL of these gracefully:
-  - No main.md found → helpful error with `recon-report init` suggestion
+  - No main.md found → helpful error with `404reportor init` suggestion
   - No API key → clear message with link to get key
   - img/ folder missing → warn but continue (report generated without images)
   - Image format unsupported → skip with warning, list supported formats
@@ -278,10 +278,10 @@ Handle ALL of these gracefully:
 ## 11. PACKAGE.JSON REQUIREMENTS
 
 {
-  "name": "recon-report",
+  "name": "404reportor",
   "version": "1.0.0",
   "description": "AI-powered cybersecurity report generator for HTB, CTF, CPTS, OSCP",
-  "bin": { "recon-report": "./bin/recon-report.js" },
+  "bin": { "404reportor": "./bin/404reportor.js" },
   "keywords": ["cybersecurity", "ctf", "pentest", "htb", "oscp", "report"],
   "engines": { "node": ">=18.0.0" }
 }
@@ -298,13 +298,13 @@ Do not use placeholder comments like "// implement this" — write the full code
 Add a provider configuration system so users can plug in ANY AI backend.
 The tool must NOT be hardcoded to Anthropic — it should be provider-agnostic.
 
-### 12a. NEW CLI COMMAND: `recon-report config`
+### 12a. NEW CLI COMMAND: `404reportor config`
 
 Implement an interactive setup wizard:
 
-  `recon-report config`         → interactive setup (prompts + saves)
-  `recon-report config --show`  → print current config (mask API key)
-  `recon-report config --reset` → clear saved config
+  `404reportor config`         → interactive setup (prompts + saves)
+  `404reportor config --show`  → print current config (mask API key)
+  `404reportor config --reset` → clear saved config
 
 The interactive wizard (use Node.js readline or the 'enquirer' package) asks:
 
@@ -338,11 +338,11 @@ The interactive wizard (use Node.js readline or the 'enquirer' package) asks:
   ? Vision support? (y/n) → if no, images will be described via filename only
   
   ✓ Testing connection... (runs ping test automatically — see section 13)
-  ✓ Config saved to ~/.recon-report/config.json
+  ✓ Config saved to ~/.404reportor/config.json
 
 ### 12b. CONFIG FILE LOCATION
 
-Save provider config to `~/.recon-report/config.json` (global, not per-project).
+Save provider config to `~/.404reportor/config.json` (global, not per-project).
 This way the user sets it once and all projects use it.
 
 Format:
@@ -360,7 +360,7 @@ Format:
 PRIORITY ORDER for config resolution (highest to lowest):
   1. CLI flag:          `--model gpt-4o --key sk-xxx`    (one-off override)
   2. Project .env:      `RECON_API_KEY=`, `RECON_MODEL=`  (project-specific)
-  3. Global config:     `~/.recon-report/config.json`       (set via config cmd)
+  3. Global config:     `~/.404reportor/config.json`       (set via config cmd)
   4. Environment var:   `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` (legacy fallback)
 
 ### 12c. AI CLIENT ABSTRACTION LAYER
@@ -405,13 +405,13 @@ and only pass image filenames/labels as text context to the AI.
 copy
 section 13 — ping / health check command
 
-## 13. `recon-report ping` — AI HEALTH CHECK COMMAND
+## 13. `404reportor ping` — AI HEALTH CHECK COMMAND
 
 Implement a dedicated ping command that tests the configured AI endpoint.
 
-  `recon-report ping`                → test current config
-  `recon-report ping --verbose`     → show full request + response
-  `recon-report ping --key sk-xxx --url https://... --model gpt-4o`
+  `404reportor ping`                → test current config
+  `404reportor ping --verbose`     → show full request + response
+  `404reportor ping --key sk-xxx --url https://... --model gpt-4o`
                                          → test a config WITHOUT saving it
 
 ### What ping does (in order):
@@ -468,11 +468,11 @@ FAILURE output:
   ← Response status + headers
   ← Response body (first 500 chars)
 
-### Auto-ping on `recon-report config`
+### Auto-ping on `404reportor config`
   After saving config, automatically run ping once.
   If ping fails, warn the user but still save the config:
     ⚠ Config saved but ping failed: Invalid API key
-    Run `recon-report ping` after fixing your key.
+    Run `404reportor ping` after fixing your key.
 
 ### Provider-specific hints:
   Build a hints map — if error matches + provider known, show targeted help:

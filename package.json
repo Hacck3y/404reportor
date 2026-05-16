@@ -1,10 +1,10 @@
 {
-  "name": "recon-report",
+  "name": "404reportor",
   "version": "1.0.0",
   "description": "AI-assisted CLI that turns raw cybersecurity notes and screenshots into professional reports.",
   "type": "module",
   "bin": {
-    "recon-report": "./bin/recon-report.js"
+    "404reportor": "bin/404reportor.js"
   },
   "files": [
     "bin",
@@ -13,8 +13,8 @@
     ".env.example"
   ],
   "scripts": {
-    "smoke": "node ./bin/recon-report.js --help",
-    "demo": "node ./bin/recon-report.js run --no-ai --input project_idea.md --format html"
+    "smoke": "node ./bin/404reportor.js --help",
+    "demo": "node ./bin/404reportor.js run --no-ai --input project_idea.md --format html"
   },
   "keywords": [
     "cybersecurity",

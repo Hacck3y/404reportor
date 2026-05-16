@@ -28,7 +28,7 @@ import { formatBytes, normalizeFormat, renderReport } from '../src/renderer.js';
 const program = new Command();
 
 program
-  .name('recon-report')
+  .name('404reportor')
   .description('Turn raw cybersecurity notes and screenshots into professional reports.')
   .version('1.0.0')
   .showHelpAfterError()
@@ -88,10 +88,10 @@ async function initProject(options) {
   writes.push(await writeFileIfAllowed(path.join(cwd, '.env'), envTemplate(), options.force));
   writes.push(await writeFileIfAllowed(path.join(cwd, 'img', 'captions.txt'), captionsTemplate(), options.force));
 
-  console.log(chalk.bold('recon-report workspace initialized'));
+  console.log(chalk.bold('404reportor workspace initialized'));
   for (const line of writes.filter(Boolean)) console.log(line);
   console.log('');
-  console.log(`Next: edit ${chalk.cyan('main.md')} and run ${chalk.cyan('recon-report run --format html')}`);
+  console.log(`Next: edit ${chalk.cyan('main.md')} and run ${chalk.cyan('404reportor run --format html')}`);
 }
 
 async function setupProvider(options) {

@@ -1,6 +1,6 @@
-# recon-report
+# 404reportor
 
-`recon-report` is an npm CLI tool that turns raw cybersecurity notes and screenshots into professional HTML, PDF, or Markdown reports.
+`404reportor` is an npm CLI tool that turns raw cybersecurity notes and screenshots into professional HTML, PDF, or Markdown reports.
 
 It is designed for HTB, CTF, OSCP/CPTS-style labs, and pentest reporting. You can use Claude for the best report draft, but the CLI also has a local fallback so it still works without an API key.
 
@@ -16,7 +16,7 @@ npm link
 After publishing:
 
 ```bash
-npm install -g recon-report
+npm install -g 404reportor
 ```
 
 ## Quick Start
@@ -24,7 +24,7 @@ npm install -g recon-report
 Create a report workspace:
 
 ```bash
-recon-report init
+404reportor init
 ```
 
 Write your raw notes in `main.md`, then add screenshots under `img/`.
@@ -32,38 +32,38 @@ Write your raw notes in `main.md`, then add screenshots under `img/`.
 Generate a report:
 
 ```bash
-recon-report run --type htb --format html
+404reportor run --type htb --format html
 ```
 
 Generate a PDF from AI-written Markdown:
 
 ```bash
-recon-report run --provider google --type htb --format pdf --save-md
+404reportor run --provider google --type htb --format pdf --save-md
 ```
 
 Generate without AI:
 
 ```bash
-recon-report run --no-ai --format html
+404reportor run --no-ai --format html
 ```
 
 ## Commands
 
 ```bash
-recon-report init
-recon-report init --force
-recon-report run
-recon-report run --format html
-recon-report run --format pdf
-recon-report run --format md
-recon-report run --type htb
-recon-report run --type ctf
-recon-report run --type pentest
-recon-report run --type cpts
-recon-report run --type oscp
-recon-report run --input notes.md --img-dir screenshots --output reports
-recon-report run --provider google --format pdf --save-md
-recon-report setup --provider google
+404reportor init
+404reportor init --force
+404reportor run
+404reportor run --format html
+404reportor run --format pdf
+404reportor run --format md
+404reportor run --type htb
+404reportor run --type ctf
+404reportor run --type pentest
+404reportor run --type cpts
+404reportor run --type oscp
+404reportor run --input notes.md --img-dir screenshots --output reports
+404reportor run --provider google --format pdf --save-md
+404reportor setup --provider google
 ```
 
 ## AI Setup
@@ -71,7 +71,7 @@ recon-report setup --provider google
 Use Google AI Studio / Gemini:
 
 ```bash
-recon-report setup --provider google
+404reportor setup --provider google
 ```
 
 Then paste your key into `.env`:
@@ -90,7 +90,7 @@ ANTHROPIC_API_KEY=your_api_key_here
 ANTHROPIC_MODEL=claude-sonnet-4-20250514
 ```
 
-If no API key is available, `recon-report` automatically uses the local fallback generator. Do not pass `--no-ai` when you want a polished AI-written report.
+If no API key is available, `404reportor` automatically uses the local fallback generator. Do not pass `--no-ai` when you want a polished AI-written report.
 
 ## Notes Format
 

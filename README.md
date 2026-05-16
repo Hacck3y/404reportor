@@ -52,11 +52,17 @@ Generate a report:
 # Basic HTML report
 404reportor run --type htb --format html
 
+#or 
+npx 404reportor run --type htb --format html
+
 # PDF report with AI‑generated markdown saved alongside
 404reportor run --provider google --type htb --format pdf --save-md
 
 # Run completely locally (no API key needed)
 404reportor run --no-ai --format html
+
+#or
+npx 404reportor run --no-ai --format html
 ```
 
 ## Commands

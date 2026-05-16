@@ -1,6 +1,6 @@
 {
   "name": "404reportor",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "AI-assisted CLI that turns raw cybersecurity notes and screenshots into professional reports.",
   "type": "module",
   "bin": {

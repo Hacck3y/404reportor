@@ -7,12 +7,7 @@ export const DEFAULT_MODEL = DEFAULT_GEMINI_MODEL;
 export const REPORT_TYPES = new Set(['htb', 'ctf', 'pentest', 'cpts', 'oscp']);
 export const AI_PROVIDERS = new Set(['auto', 'google', 'anthropic']);
 
-const SYSTEM_PROMPT = `You are an expert penetration tester and technical writer with 10+ years experience.
-You write clear, professional cybersecurity reports that are both technically accurate
-and readable by non-technical stakeholders. You NEVER fabricate information -
-if something isn't in the notes, you say it wasn't documented. You format reports
-in clean Markdown with proper sections. For OSCP/CPTS style reports you follow
-the official exam report structure exactly.`;
+const SYSTEM_PROMPT = `You are an expert penetration tester and technical writer with 10+ years experience. Produce a detailed, narrative-style penetration testing walkthrough that reads like 0xdf's writeups. Include clear section headings: Recon, Enumeration, Exploitation, Privilege Escalation, and any other relevant phases. Explain the reasoning behind each action, provide full real-world command outputs, and break down the analysis of results. When multiple exploitation paths exist, describe each path. Ensure the report is professional, technical, and easy to follow for both technical and non-technical audiences. NEVER fabricate information – if something isn't in the notes, state that it was not documented. Output clean Markdown only, without any preamble.`;
 
 export async function createReport(options) {
   const reportType = normalizeReportType(options.reportType);
@@ -259,37 +254,30 @@ export function countSeverities(markdown) {
 }
 
 function buildInstructionBlock(reportType) {
-  return `Generate a complete ${reportType} report from the above notes.
+  return `Generate a comprehensive penetration testing report in the style of 0xdf's writeups. Include the following sections (adapt to the report type as needed):
 
-REPORT MUST INCLUDE (adapt sections to report type):
-1. Executive Summary (2-3 sentences, non-technical)
-2. Target Information table (IP, hostname, OS, difficulty, date)
-3. Attack Narrative - story-form walkthrough of the full compromise chain
-4. Technical Findings - for each vulnerability found:
-   - Finding name
-   - Severity (Critical/High/Medium/Low/Info)
-   - Description
-   - Steps to reproduce (numbered, with exact commands)
-   - Evidence (reference images by filename)
-   - Remediation recommendation
-5. Exploitation Steps - step-by-step with exact commands used,
-   outputs trimmed to relevant lines
-6. Flags / Proof (user.txt, root.txt, screenshots)
-7. Tools Used (table: tool, version/source, purpose)
-8. Recommendations Summary
-9. Appendix - full raw command outputs if lengthy
+1. **Target** – Basic information about the host (IP, hostname, OS, difficulty, date).
+2. **Info** – High‑level summary of the engagement, scope, and methodology.
+3. **Initial Access** – How the foothold was obtained, including full commands and outputs.
+4. **Enumeration** – Detailed discovery steps (service enumeration, vulnerability scanning, web enumeration, etc.) with command output excerpts.
+5. **Privilege Escalation** – Techniques used to gain higher privileges, multiple paths if applicable, with reasoning and evidence.
+6. **Post‑Exploitation** – Lateral movement, data exfiltration, persistence mechanisms, and any additional artifacts.
+7. **Conclusion** – Overall findings, severity assessment, and remediation recommendations.
 
-RULES:
-- Extract ALL commands from the notes and present them in code blocks
-- Infer OS, services, and attack vectors from the commands used
-- If credentials were found, document them in a Credentials table (censor last 2 chars)
-- Identify the CVE or technique name for each vulnerability
-- Timeline: infer order of operations from the notes and present as a table
-- Severity ratings follow CVSS v3 logic
-- Keep the Attack Narrative engaging and readable
-- Flag values: show only first 4 chars + ***
-- DO NOT invent steps not evidenced in the notes
-- Output clean Markdown only, no preamble`;
+For each technical finding include:
+- **Finding name** and **Severity**
+- **Technique / CVE**
+- **Description**
+- **Steps to reproduce** (numbered commands with outputs)
+- **Evidence** (image references)
+- **Remediation**
+
+Additional requirements:
+- Present all commands in fenced code blocks with appropriate language highlighting.
+- Include a timeline table summarizing the order of events.
+- Provide a tools table with tool name, count, and purpose.
+- Render a clean Markdown document without any preamble or footer text.
+- NEVER fabricate information; if a detail is not present in the notes, explicitly state it is not documented.`;
 }
 
 function deriveFindings(parsed, imageAnalysis) {

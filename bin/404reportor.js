@@ -30,7 +30,7 @@ const program = new Command();
 program
   .name('404reportor')
   .description('Turn raw cybersecurity notes and screenshots into professional reports.')
-  .version('1.0.0')
+  .version('1.2.0')
   .showHelpAfterError()
   .option('-i, --input <file>', 'notes markdown file', 'main.md')
   .option('--img-dir <dir>', 'screenshot directory', 'img')

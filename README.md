@@ -1,19 +1,36 @@
 # 404reportor
 
-`404reportor` is an npm CLI tool that turns raw cybersecurity notes and screenshots into professional HTML, PDF, or Markdown reports.
+[![npm version](https://img.shields.io/npm/v/404reportor.svg)](https://www.npmjs.com/package/404reportor)
+[![License](https://img.shields.io/npm/l/404reportor.svg)](https://github.com/yourusername/404reportor/blob/main/LICENSE)
+[![NPM downloads](https://img.shields.io/npm/dt/404reportor.svg)](https://www.npmjs.com/package/404reportor)
 
-It is designed for HTB, CTF, OSCP/CPTS-style labs, and pentest reporting. You can use Claude for the best report draft, but the CLI also has a local fallback so it still works without an API key.
+**404reportor** is an npm CLI tool that transforms raw cybersecurity notes and screenshots into polished HTML, PDF, or Markdown reports. It works for HTB, CTF, OSCP/CPTS style labs and pentest reporting. By default it uses Google Gemini or Anthropic Claude for AI‑enhanced drafts, but it also provides a local fallback when no API key is configured.
 
-## Install
+## Table of Contents
 
-From this project folder during development:
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Commands](#commands)
+- [AI Setup](#ai-setup)
+- [Notes Format](#notes-format)
+- [Screenshots](#screenshots)
+- [Outputs](#outputs)
+- [Security Considerations](#security-considerations)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Installation
+
+### Development (from source)
 
 ```bash
+git clone https://github.com/yourusername/404reportor.git
+cd 404reportor
 npm install
-npm link
+npm link   # makes the `404reportor` command available globally on your machine
 ```
 
-After publishing:
+### After publishing (global installation)
 
 ```bash
 npm install -g 404reportor
@@ -21,82 +38,73 @@ npm install -g 404reportor
 
 ## Quick Start
 
-Create a report workspace:
+Create a new workspace scaffold:
 
 ```bash
 404reportor init
 ```
 
-Write your raw notes in `main.md`, then add screenshots under `img/`.
+Edit `main.md` with your raw notes and place any screenshots in the `img/` directory.
 
 Generate a report:
 
 ```bash
+# Basic HTML report
 404reportor run --type htb --format html
-```
 
-Generate a PDF from AI-written Markdown:
-
-```bash
+# PDF report with AI‑generated markdown saved alongside
 404reportor run --provider google --type htb --format pdf --save-md
-```
 
-Generate without AI:
-
-```bash
+# Run completely locally (no API key needed)
 404reportor run --no-ai --format html
 ```
 
 ## Commands
 
-```bash
-404reportor init
-404reportor init --force
-404reportor run
-404reportor run --format html
-404reportor run --format pdf
-404reportor run --format md
-404reportor run --type htb
-404reportor run --type ctf
-404reportor run --type pentest
-404reportor run --type cpts
-404reportor run --type oscp
-404reportor run --input notes.md --img-dir screenshots --output reports
-404reportor run --provider google --format pdf --save-md
-404reportor setup --provider google
-```
+| Command | Description |
+|---------|-------------|
+| `404reportor init [--force]` | Scaffold `main.md`, `img/`, `img/captions.txt`, and `.env`. |
+| `404reportor setup --provider <google|anthropic>` | Create or update `.env` with the selected AI provider key. |
+| `404reportor run [options]` | Parse notes, process screenshots, generate and render the report. |
+| `404reportor --help` | Show global help. |
+| `404reportor <command> --help` | Show help for a specific command. |
+
+### Run options (selected)
+
+- `--provider <google|anthropic|auto>` – Choose AI provider (default auto‑detect).
+- `--type <htb|ctf|pentest|cpts|oscp>` – Report type (affects terminology).
+- `--format <html|pdf|md>` – Output format.
+- `--save-md` – Save the AI‑generated Markdown draft alongside the final output.
+- `--no-ai` – Skip AI generation and use the local fallback.
 
 ## AI Setup
 
-Use Google AI Studio / Gemini:
+Configure an API key for the desired provider:
 
 ```bash
+# Google Gemini / AI Studio
 404reportor setup --provider google
+# Anthropic Claude
+404reportor setup --provider anthropic
 ```
 
-Then paste your key into `.env`:
+Open the generated `.env` and paste your key:
 
-```bash
+```dotenv
 RECON_REPORT_PROVIDER=google
-GEMINI_API_KEY=your_google_ai_studio_key_here
+GEMINI_API_KEY=your_google_api_key
 GEMINI_MODEL=gemini-2.5-flash
-```
 
-You can also use Anthropic:
-
-```bash
-RECON_REPORT_PROVIDER=anthropic
-ANTHROPIC_API_KEY=your_api_key_here
+# or for Anthropic
+ANTHROPIC_API_KEY=your_anthropic_api_key
 ANTHROPIC_MODEL=claude-sonnet-4-20250514
 ```
 
-If no API key is available, `404reportor` automatically uses the local fallback generator. Do not pass `--no-ai` when you want a polished AI-written report.
+If no key is present, the CLI falls back to the local report generator automatically.
 
 ## Notes Format
 
-There is no strict format. The parser accepts headings, freeform notes, commands, outputs, credentials, flags, service scan lines, and CVEs.
-
-Example:
+The parser is flexible – any markdown document containing headings, commands, outputs, credentials, service scans, or CVE references will be processed. Example `main.md`:
 
 ```markdown
 TARGET: 10.10.11.42
@@ -104,30 +112,23 @@ MACHINE: Cascade (HTB)
 OS: Windows
 DIFFICULTY: Medium
 
-# port scan
+# Port scan
 nmap -sC -sV -oA nmap/initial 10.10.11.42
 22/tcp   open  ssh     OpenSSH 7.4
 80/tcp   open  http    Apache 2.4.18
 
-# web enum
+# Web enumeration
 gobuster dir -u http://10.10.11.42 -w /usr/share/wordlists/dirb/common.txt
 found: /admin (302)
 ```
 
 ## Screenshots
 
-Place screenshots in `img/`.
+Place screenshots in `img/`. Supported extensions:
 
-Supported extensions:
+- `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.bmp`
 
-- `.png`
-- `.jpg`
-- `.jpeg`
-- `.gif`
-- `.webp`
-- `.bmp`
-
-Nested folders are supported:
+Nested directories are allowed:
 
 ```text
 img/
@@ -140,27 +141,54 @@ Optional captions can be added in `img/captions.txt`:
 
 ```text
 01-nmap.png: Initial Nmap scan showing exposed SSH and HTTP services.
-exploit/02-shell.png: First shell as the low-privileged user.
+exploit/02-shell.png: First shell as the low‑privileged user.
 ```
 
 ## Outputs
 
-HTML output is self-contained and includes:
-
-- Embedded CSS.
-- Embedded base64 images.
-- Table of contents.
-- Dark/light toggle.
-- Print-friendly styles.
-- Image lightbox.
-- Severity badges.
-
-PDF output uses Puppeteer. If Chrome is not available on your system, install the browser package used by Puppeteer:
+- **HTML** – Self‑contained with embedded CSS, base64 images, table of contents, dark/light toggle, print‑friendly styles, image lightbox, and severity badges.
+- **PDF** – Generated via Puppeteer. If Chrome is unavailable, install the bundled browser:
 
 ```bash
 npx puppeteer browsers install chrome
 ```
+- **Markdown** – Raw AI‑generated draft (when `--save-md` is used).
 
-## Security Notes
+## Security Considerations
 
-Raw notes can contain real credentials and sensitive proof values. The generated report masks secrets, but AI mode sends the provided notes and image analysis to Anthropic. Use `--no-ai` for restricted environments.
+Raw notes may contain real credentials or sensitive data. The generated report masks secrets, but AI mode sends notes and image analysis to the chosen provider. Use `--no-ai` for isolated environments.
+
+## Contributing
+
+Contributions are welcome! Follow these steps:
+
+1. **Fork** the repository and clone your fork.
+2. Create a feature branch:
+
+   ```bash
+   git checkout -b feature/awesome-feature
+   ```
+3. Install dependencies and link locally:
+
+   ```bash
+   npm install
+   npm link
+   ```
+4. Make your changes, ensuring code follows existing style and includes appropriate tests (if applicable).
+5. Run linting and format checks:
+
+   ```bash
+   npm run lint   # (if a lint script is defined)
+   npm run format # (if a format script is defined)
+   ```
+6. Commit with a clear message and push to your fork.
+7. Open a Pull Request against `main`. Please include:
+   - A description of the change.
+   - Any relevant screenshots or examples.
+   - Instructions for testing.
+
+Please adhere to the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md).
+
+## License
+
+MIT © 2024‑2026
